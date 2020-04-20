@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
  export const selectCartItems = createSelector(
      [selectCart],
-     (cart) => cart.cartItems
+     cart => cart.cartItems
  );
 
 export const selectCartHidden = createSelector(
@@ -24,6 +24,7 @@ export const selectCartHidden = createSelector(
      [selectCartItems],
      cartItems =>
         cartItems.reduce( 
-            (accumalatedQuantity, cartItem) => accumalatedQuantity + cartItem.quantity * cartItem.price,
+            (accumalatedQuantity, cartItem) => 
+                accumalatedQuantity + cartItem.quantity * cartItem.price,
             0)
  );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
@@ -8,19 +8,22 @@ import { signUpStart } from '../../redux/user/user.action';
 
 import './sign-up.styles.scss';
 
-const SignUp = ({ signUpStart }) => {
+class SignUp extends React.Component {
+    constructor(){
+        super();
 
-    const [userCredentials, setUserCredentials] = useState({
-        displayName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
+        this.state = {
+            displayName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
+    }
 
-    const { displayName, email, password, confirmPassword } = userCredentials;
-
-    const handleSubmit = async event => {
+    handleSubmit = async event => {
         event.preventDefault();
+        const { signUpStart } = this.props;
+        const { displayName, email, password, confirmPassword } = this.state;
 
         if(password !== confirmPassword) {
             alert("password don't match");
@@ -29,22 +32,24 @@ const SignUp = ({ signUpStart }) => {
         signUpStart({ displayName, email, password });
     };
 
-    const handleChange = event => {
+    handleChange = event => {
         const { name, value } = event.target;
 
-        setUserCredentials({ ...userCredentials, [name]: value });
+        this.setState({ [name]: value });
     };
 
+    render () {
+        const { displayName, email, password, confirmPassword }= this.state;
         return(
             <div className='sign-up'>
                 <h2 className='title'>I do not have a account</h2>
                 <span>Sign up with your email & password</span>
-                <form className='sign-up-form' onSubmit={handleSubmit}>
+                <form className='sign-up-form' onSubmit={this.handleSubmit}>
                     <FormInput
                       type='text'
                       name='displayName'
                       value={displayName}
-                      onChange={handleChange}  
+                      onChange={this.handleChange}  
                       label='Display Name'
                       required
                     />
@@ -52,7 +57,7 @@ const SignUp = ({ signUpStart }) => {
                       type='email'
                       name='email'
                       value={email}
-                      onChange={handleChange}  
+                      onChange={this.handleChange}  
                       label='Email'
                       required
                     />
@@ -60,7 +65,7 @@ const SignUp = ({ signUpStart }) => {
                         type='password'
                         name='password'
                         value={password}
-                        onChange={handleChange}  
+                        onChange={this.handleChange}  
                         label='Password'
                         required
                     />
@@ -68,7 +73,7 @@ const SignUp = ({ signUpStart }) => {
                         type='password'
                         name='confirmPassword'
                         value={confirmPassword}
-                        onChange={handleChange}  
+                        onChange={this.handleChange}  
                         label='Confirm password'
                         required
                     />
@@ -76,6 +81,7 @@ const SignUp = ({ signUpStart }) => {
                 </form>
             </div>
         )
+    }
 }
 
 const mapDispatchToProps = dispatch => ({
